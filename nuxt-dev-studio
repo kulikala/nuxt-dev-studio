@@ -1,0 +1,48 @@
+#!/bin/bash
+
+IMAGE_NAME=kulikala/nuxt-dev-studio
+TAG_NAME=latest
+IMAGE_PATH="${IMAGE_NAME}:${TAG_NAME}"
+PROJECT_NAME="$1"
+
+expect_docker () {
+  if ! type docker > /dev/null 2>&1; then
+    cat << EOS 2>&1
+ERROR: docker not found, install Docker first
+    https://www.docker.com/products/docker-desktop
+
+EOS
+    exit 1
+  fi
+}
+
+pull_image () {
+  docker image pull \
+    "${IMAGE_PATH}"
+}
+
+run_create () {
+  docker container run \
+    --interactive \
+    --name nuxt-dev-studio \
+    --rm \
+    --tty \
+    --volume "$(pwd):/app" \
+    "${IMAGE_PATH}" \
+    create \
+    "${PROJECT_NAME}"
+}
+
+cat << EOS
+      _  _ _  _ _  _ ___    ___  ____ _  _
+      |\ | |  |  \/   |  __ |  \ |___ |  |
+      | \| |__| _/\_  |     |__/ |___  \/
+           ____ ___ _  _ ___  _ ____
+           [__   |  |  | |  \ | |  |
+           ___]  |  |__| |__/ | |__|
+
+EOS
+
+expect_docker
+pull_image
+run_create

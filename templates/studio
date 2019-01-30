@@ -1,0 +1,87 @@
+#!/bin/bash
+
+IMAGE_NAME=kulikala/nuxt-dev-studio
+TAG_NAME=latest
+IMAGE_PATH="${IMAGE_NAME}:${TAG_NAME}"
+
+PORT_CONTAINER=3000
+PORT_LOCAL=3000
+
+COMMAND="$1"
+shift 1
+
+usage () {
+  cat << EOS 2>&1
+Usage: $(basename $0) COMMAND
+
+COMMAND:
+  dev
+    Launch a development server on localhost:3000 with hot-reloading.
+
+  build
+    Build your application with webpack and minify the JS & CSS (for production).
+
+  start
+    Start the server in production mode (after running build).
+
+  generate
+    Build the application and generate every route as a HTML file (used for static hosting).
+
+  lint
+    Lint source codes.
+
+  test
+    Run test commands.
+
+  add components|layouts|pages|store NAME
+    Add template component, layout, page, or store.
+
+  install PRE_PROCESSOR
+    Install pre-processors.
+    Type \`install help\` to show available pre-processors.
+
+  git ARG
+    Call git.
+
+  npm ARG
+    Call npm.
+
+  npx ARG
+    Call npx.
+
+  serve
+    Start http-server and send contents on ./dist directory.
+
+  help
+    Show this help.
+
+EOS
+  exit 1
+}
+
+run_cmd () {
+  docker container run \
+    --interactive \
+    --name nuxt-dev-studio \
+    --publish ${PORT_LOCAL}:${PORT_CONTAINER} \
+    --rm \
+    --tty \
+    --volume "$(pwd):/app" \
+    "${IMAGE_PATH}" \
+    "$@"
+}
+
+case "${COMMAND}" in
+  help | -h | --help)
+    usage
+    ;;
+  serve:dev | dev | build | start | generate | lint | test)
+    run_cmd npm run "${COMMAND}"
+    ;;
+  serve)
+    run_cmd npx http-server ./dist -p ${PORT_CONTAINER} "$@"
+    ;;
+  add | git | install | npm | npx | *)
+    run_cmd "${COMMAND}" "$@"
+    ;;
+esac

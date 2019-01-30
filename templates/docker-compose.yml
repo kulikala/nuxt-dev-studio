@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  studio:
+    build:
+      context: ./
+      args:
+        AUTO_BUILD: 'yes'
+    ports:
+      - 3000:3000
+    tty: true
