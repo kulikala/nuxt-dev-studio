@@ -2,7 +2,7 @@
 
 out_template () {
   cat << EOS
-<template${TEMPLATE_LANG:+ lang=\"${TEMPLATE_LANG}\"}>
+<template${TEMPLATE_LANG:+ lang="${TEMPLATE_LANG}"}>
 </template>
 EOS
 }
@@ -46,7 +46,7 @@ EOS
 out_style () {
   cat << EOS
 
-<style${STYLE_LANG:+ lang=\"${STYLE_LANG}\"}>
+<style${STYLE_LANG:+ lang="${STYLE_LANG}"}>
 </style>
 EOS
 }
