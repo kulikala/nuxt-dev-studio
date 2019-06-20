@@ -26,7 +26,7 @@ ONBUILD RUN npm install; \
 
 ARG BUILD_DATE
 ARG VCS_REF
-ARG VERSION=1.0
+ARG VERSION=1.1
 
 LABEL org.label-schema.build-date=${BUILD_DATE} \
       org.label-schema.name="nuxt-dev-studio" \
