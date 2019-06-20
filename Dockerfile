@@ -1,4 +1,4 @@
-FROM node:10-alpine
+FROM node:12-alpine
 
 RUN apk --update add git openssh && \
     rm -rf /var/lib/apt/lists/* && \

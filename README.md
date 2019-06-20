@@ -248,7 +248,7 @@ I'll work for it.
 
 ### Container image `kulikala/nuxt-dev-studio` seems not contain `/bin/bash`. What can I do?
 
-The base image is `node:10-alpine`.<br>
+The base image is `node:12-alpine`.<br>
 Alpine Linux is shipped with `ash` instead of `bash`.
 
 `sh` command will do most of your work.
